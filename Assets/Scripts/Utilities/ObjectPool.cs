@@ -2,42 +2,37 @@
 
 namespace Utilities
 {
-    public class ObjectPool : MonoBehaviour
+    public class ObjectPool
     {
-        [SerializeField] private int maxPool;
-        [SerializeField] private GameObject prefab;
+        private int maxPool;
+        private GameObject prefab;
         private bool recyclePositionObjects;
         private GameObject[] pool;
         private Vector3 cementary = Vector3.zero;
         public int MaxPool => maxPool;
-        private void Awake()    
-        {
-            Init();
-        }
 
-        private void Init()
+        public ObjectPool(int maxPool, GameObject prefab, Transform parent)
         {
+            this.maxPool = maxPool;
+            this.prefab = prefab;
             pool = new GameObject[maxPool];
             recyclePositionObjects = true;
             for (int i = 0; i < maxPool; i++)
             {
-                var obj = Object.Instantiate(prefab, cementary, prefab.transform.rotation,transform);
+                var obj = Object.Instantiate(prefab, cementary, prefab.transform.rotation,parent);
                 obj.GetComponent<RecyclableObject>().Configure(this);
                 obj.SetActive(false);
                 pool[i] = obj;
             }
         }
 
-        public GameObject Spawn(Vector3 _position)
+        public GameObject Spawn(int index)
         {
-            foreach (var i in pool)
+            var obj = pool[index];
+            if (!obj.activeInHierarchy)
             {
-                if (!i.activeInHierarchy)
-                {
-                    i.transform.position = _position;
-                    i.SetActive(true);
-                    return i;
-                }
+                obj.SetActive(true);
+                return obj;
             }
             return null;
         }
@@ -53,9 +48,7 @@ namespace Utilities
         public void RecyclableObject(GameObject _recycle)
         {
             if (recyclePositionObjects)
-            {
                 _recycle.transform.position = cementary;
-            }
         }
     }
 }
