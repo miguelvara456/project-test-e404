@@ -1,22 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Utilities
 {
     public class ObjectPool
     {
-        private int maxPool;
-        private GameObject prefab;
         private bool recyclePositionObjects;
         private GameObject[] pool;
         private Vector3 cementary = Vector3.zero;
-        public int MaxPool => maxPool;
+        public int MaxPool { get; private set; }
 
         public ObjectPool(int maxPool, GameObject prefab, Transform parent)
         {
-            this.maxPool = maxPool;
-            this.prefab = prefab;
+            MaxPool = maxPool;
             pool = new GameObject[maxPool];
-            recyclePositionObjects = true;
+            recyclePositionObjects = false;
             for (int i = 0; i < maxPool; i++)
             {
                 var obj = Object.Instantiate(prefab, cementary, prefab.transform.rotation,parent);
@@ -35,6 +33,22 @@ namespace Utilities
                 return obj;
             }
             return null;
+        }
+        
+        public GameObject SpawnRandom()
+        {
+            var rdm = Random.Range(0, MaxPool);
+            while (pool[rdm].activeInHierarchy)
+            {
+                 rdm = Random.Range(0, MaxPool);
+            }
+            pool[rdm].SetActive(true);
+            return pool[rdm];
+        }
+
+        public int  GetObjectsPoolDisactive()
+        {
+            return pool.Count(obj => !obj.activeInHierarchy);
         }
 
         public void SetInitialSpawnPosition(int _index, Vector3 _position)

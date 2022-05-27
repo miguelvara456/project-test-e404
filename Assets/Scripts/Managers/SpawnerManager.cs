@@ -1,32 +1,105 @@
-﻿using System;
+﻿using Data;
+using Events;
 using UnityEngine;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public class SpawnerManager : MonoBehaviour
+    public class SpawnerManager : Singleton<SpawnerManager>
     {
+        [Header("PoolObjects Variables")]
         [SerializeField] private GameObject baseObjectPrefab;
-        [SerializeField] private int countX, countY;
+        [Header("Grid Spawn Variables")]
+        [SerializeField] private int column, row;
         [SerializeField] private float startX, startY;
         [SerializeField] private float spaceX, spaceY;
+        [Header("Difficulty Data")]
+        [SerializeField] private DataDifficulty data;
+        [Header("Events")]
+        [SerializeField] private CustomEvent OnUpdateGame;
+        [SerializeField] private CustomEvent startGame;
         private ObjectPool poolObjects;
-        private void Start()
+        private float timerSpawnObjects;
+        private float currentDelaySpawnObjects;
+
+        private void Awake()
         {
+            OnUpdateGame.OnEvent.AddListener(UpdateSpawn);
+            startGame.OnEvent.AddListener(InitializeSpawn);
             InitializePoolObjects();
+        }
+
+        private void InitializeSpawn()
+        {
+            currentDelaySpawnObjects = Random.Range(data.MinTimeSpawn, data.MaxTimeSpawn);
+            timerSpawnObjects = Time.time + currentDelaySpawnObjects;
+        }
+
+        private void UpdateSpawn()
+        {
+            if (Time.time > timerSpawnObjects)
+            {
+                timerSpawnObjects = Time.time + currentDelaySpawnObjects;
+                currentDelaySpawnObjects = Random.Range(data.MinTimeSpawn, data.MaxTimeSpawn);
+                var amountObjectSpawn = Random.Range(data.MinAmountToSpawn, data.MaxAmountToSpawn);
+                SpawnGroup(amountObjectSpawn);
+            }
         }
 
         private void InitializePoolObjects()
         {
             var content = new GameObject("ObjectsContent");
-            var totalCount = countX * countY;
+            var totalCount = column * row;
             poolObjects = new ObjectPool(totalCount, baseObjectPrefab,content.transform);
 
             for (int i = 0; i < totalCount; i++)
             {
-                var newPos = new Vector3(startX + (spaceX * (i % countX)), startY +(-spaceY * (i / countX)),2f);
+                var newPos = new Vector3(startX + (spaceX * (i % column)), startY +(-spaceY * (i / column)),2f);
                 poolObjects.SetInitialSpawnPosition(i,newPos);
             }
+        }
+
+        public void SpawnGroup(int amount,int obj = 0)
+        {
+            if (poolObjects.GetObjectsPoolDisactive() < amount) return;
+            for (int i = 0; i < amount; i++)
+            {
+                var baseObjectParent = poolObjects.SpawnRandom();
+                SpawnObject(obj,baseObjectParent.transform);
+            }
+        }
+
+        private void SpawnObject(int typeObj,Transform parent)
+        {
+            Instantiate(GetTypeObject(typeObj), parent.position, Quaternion.identity,parent);
+        }
+
+        private GameObject GetTypeObject(int indexType = 0)
+        {
+            if (indexType != 0)
+                return data.Objects[indexType].objectToSpawn;
+            else
+                return data.Objects[ProbabiltyCheckTypeObject()].objectToSpawn;
+
+            return null;
+        }
+
+        private int ProbabiltyCheckTypeObject()
+        {
+            var rdm = Random.Range(0f, 1f);
+            var numForAdding = 0f;
+            var total = 0f;
+            total = data.Objects.Length;
+            for (int i = 0; i < total; i++)
+            {
+                var chance = data.Objects[i].chance;
+                if (chance / total + numForAdding >= rdm)
+                    return i;
+                else
+                    numForAdding += chance / total;
+            }
+            return 0;
         }
     }
 }

@@ -1,25 +1,27 @@
 ﻿using Interfaces;
-using UnityEngine;
+using Managers;
 
 namespace Objects.TypesObjects
 {
     public class Coin : BaseObject,IDisappear
     {
         public float delayDisappear { get; set; }
-    
+        
         public override void OnClickObject() 
-        {
-            throw new System.NotImplementedException();
+        { 
+            transform.parent.gameObject.SetActive(false);
+            ScoreManager.Instance.AddScore(5);
+            Destroy(this.gameObject);
         }
 
         public override void OnLoseClickObject() 
         {
-            throw new System.NotImplementedException();
+            ScoreManager.Instance.SubstractScore(1);
         }
     
         public void DisappearObject()
         {
-            throw new System.NotImplementedException();
+            OnLoseClickObject();
         }
     }
 }

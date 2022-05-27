@@ -1,5 +1,5 @@
 ﻿using Interfaces;
-using UnityEngine;
+using Managers;
 
 namespace Objects.TypesObjects
 {
@@ -7,19 +7,20 @@ namespace Objects.TypesObjects
     {
         public float delayDisappear { get; set; }
         
-        public override void OnClickObject()
+        public override void OnClickObject() 
         {
-            throw new System.NotImplementedException();
+            transform.parent.gameObject.SetActive(false);
+            SpawnerManager.Instance.SpawnGroup(5,0);
         }
 
-        public override void OnLoseClickObject()
+        public override void OnLoseClickObject() 
         {
-            throw new System.NotImplementedException();
+            ScoreManager.Instance.SubstractScore(10);
         }
-        
+    
         public void DisappearObject()
         {
-            throw new System.NotImplementedException();
+            OnLoseClickObject();
         }
     }
 }

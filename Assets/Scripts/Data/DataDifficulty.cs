@@ -8,15 +8,15 @@ namespace Data
     {
         [SerializeField] private float minTimeSpawn;
         [SerializeField] private float maxTimeSpawn;
-        [SerializeField] private float minAmountToSpawn;
-        [SerializeField] private float maxAmountToSpawn;
+        [SerializeField] private int minAmountToSpawn;
+        [SerializeField] private int maxAmountToSpawn;
         [SerializeField] private DataObject[] objects;
 
         public DataObject[] Objects => objects;
         public float MinTimeSpawn => minTimeSpawn;
         public float MaxTimeSpawn => maxTimeSpawn;
-        public float MinAmountToSpawn => minAmountToSpawn;
-        public float MaxAmountToSpawn => maxAmountToSpawn;
+        public int MinAmountToSpawn => minAmountToSpawn;
+        public int MaxAmountToSpawn => maxAmountToSpawn;
     }
     
     [Serializable]
