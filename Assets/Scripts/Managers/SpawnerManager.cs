@@ -14,14 +14,13 @@ namespace Managers
         [SerializeField] private int column, row;
         [SerializeField] private float startX, startY;
         [SerializeField] private float spaceX, spaceY;
-        [Header("Difficulty Data")]
-        [SerializeField] private DataDifficulty data;
         [Header("Events")]
         [SerializeField] private CustomEvent OnUpdateGame;
         [SerializeField] private CustomEvent startGame;
         private ObjectPool poolObjects;
         private float timerSpawnObjects;
         private float currentDelaySpawnObjects;
+        public DataDifficulty data;
 
         private void Awake()
         {
@@ -60,7 +59,7 @@ namespace Managers
             }
         }
 
-        public void SpawnGroup(int amount,int obj = 0)
+        public void SpawnGroup(int amount,int obj = -1)
         {
             if (poolObjects.GetObjectsPoolDisactive() < amount) return;
             for (int i = 0; i < amount; i++)
@@ -75,22 +74,24 @@ namespace Managers
             Instantiate(GetTypeObject(typeObj), parent.position, Quaternion.identity,parent);
         }
 
-        private GameObject GetTypeObject(int indexType = 0)
+        private GameObject GetTypeObject(int indexType)
         {
-            if (indexType != 0)
+            if (indexType != -1)
                 return data.Objects[indexType].objectToSpawn;
             else
-                return data.Objects[ProbabiltyCheckTypeObject()].objectToSpawn;
-
-            return null;
+                return data.Objects[ProbabilityCheckTypeObject()].objectToSpawn;
         }
+        
 
-        private int ProbabiltyCheckTypeObject()
+        private int ProbabilityCheckTypeObject()
         {
             var rdm = Random.Range(0f, 1f);
             var numForAdding = 0f;
             var total = 0f;
-            total = data.Objects.Length;
+            foreach (var obj in data.Objects)
+                total += obj.chance;
+            
+            
             for (int i = 0; i < total; i++)
             {
                 var chance = data.Objects[i].chance;

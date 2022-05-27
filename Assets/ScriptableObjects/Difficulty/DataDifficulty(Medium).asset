@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fb2716902fe477aa42d08b5db364872, type: 3}
-  m_Name: DataDifficulty(Easy)
+  m_Name: DataDifficulty(Medium)
   m_EditorClassIdentifier: 
-  minTimeSpawn: 2
-  maxTimeSpawn: 4
-  minAmountToSpawn: 3
+  minTimeSpawn: 4
+  maxTimeSpawn: 6
+  minAmountToSpawn: 2
   maxAmountToSpawn: 6
   objects:
-  - chance: 50
+  - chance: 40
     objectToSpawn: {fileID: 2085793601830077113, guid: 8fbf8402428ab3f409b3260047c0c6fa, type: 3}
-  - chance: 80
+  - chance: 70
     objectToSpawn: {fileID: 3867797850777652271, guid: 1491b83c3bf98b34992ea24d56ee908b, type: 3}
   - chance: 100
     objectToSpawn: {fileID: 8918788870050297365, guid: 05c8b95bf5489c7459b6d72816e765b5, type: 3}
   - chance: 30
     objectToSpawn: {fileID: 2141399998392110717, guid: 1051a7a20cd890c4689013c3d93d831c, type: 3}
-  - chance: 30
-    objectToSpawn: {fileID: 7789170408133925828, guid: ef67afdf336dd2543ae1e651cddb6be7, type: 3}
   - chance: 20
+    objectToSpawn: {fileID: 7789170408133925828, guid: ef67afdf336dd2543ae1e651cddb6be7, type: 3}
+  - chance: 10
     objectToSpawn: {fileID: 5078633369685746639, guid: 3d770782613b0fe4ca7c6d7d2c70e30e, type: 3}

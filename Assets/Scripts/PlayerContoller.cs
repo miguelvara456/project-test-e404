@@ -9,6 +9,7 @@ public class PlayerContoller : MonoBehaviour
     [Header("Events")]
     [SerializeField] private CustomEvent OnUpdateGame;
     private LayerMask layerRaycast;
+    protected float maxDistanceRaycast = 100f;
     private Camera cam;
 
     private void Awake()
@@ -30,7 +31,7 @@ public class PlayerContoller : MonoBehaviour
     {
         Ray cameraRay = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(cameraRay, out hit, 250f, layerRaycast))
+        if (Physics.Raycast(cameraRay, out hit, maxDistanceRaycast, layerRaycast))
             hit.collider.GetComponent<BaseObject>().OnClickObject();
         
     }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2154910471281581919}
   - component: {fileID: 2140405092984849437}
   - component: {fileID: 2140405092984849434}
+  - component: {fileID: 4427805773944149079}
   m_Layer: 0
   m_Name: RedBox
   m_TagString: Untagged
@@ -110,3 +111,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75da6ffa4e6b43a696e03bde5b9d91be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onUpdate: {fileID: 11400000, guid: 261003b2f9c711040bf28a0e4e356819, type: 2}
+--- !u!114 &4427805773944149079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141399998392110717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d183b5acdc94d07a18665ef827c4dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 4.5
